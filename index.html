@@ -1,0 +1,484 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Omas 80. Geburtstag</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: one narrow story column under a "day clock" timeline (08:30 → 20:00); scene card, two choice tiles, quiz block below. */
+:root{
+  --bg:#F4F1F9; --surface:#FFFFFF; --sunk:#ECE7F4; --ink:#241A33; --muted:#675D7C; --line:#DDD5EA;
+  --accent:#E39A0B; --accent-soft:#FCEFD2; --accent-ink:#3B2700;
+  --plum:#5B2A86; --good:#22825A; --good-soft:#DDF2E7; --bad:#BE3D33; --bad-soft:#F8E0DD;
+  --f-display:"Bagel Fat One","Arial Black",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#14101B; --surface:#201A2A; --sunk:#2A2236; --ink:#EFEAF6; --muted:#A99FBA; --line:#3A3149;
+  --accent:#F2B33D; --accent-soft:#3A2C12; --accent-ink:#1E1400;
+  --plum:#C9A2F0; --good:#5CC38A; --good-soft:#163526; --bad:#EE7B71; --bad-soft:#3C1C1A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14101B; --surface:#201A2A; --sunk:#2A2236; --ink:#EFEAF6; --muted:#A99FBA; --line:#3A3149;
+  --accent:#F2B33D; --accent-soft:#3A2C12; --accent-ink:#1E1400;
+  --plum:#C9A2F0; --good:#5CC38A; --good-soft:#163526; --bad:#EE7B71; --bad-soft:#3C1C1A; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55;padding-inline:16px;padding-block:20px 60px}
+.wrap{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1,h2{font-family:var(--f-display);font-weight:400;line-height:1.05;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,8vw,3.4rem);color:var(--plum)}
+h2{font-size:1.7rem}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* top bar */
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.bar .brand{font-family:var(--f-display);font-size:1.1rem;color:var(--plum);margin-right:auto}
+.chip{font-family:var(--f-mono);font-size:.82rem;font-weight:700;border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-variant-numeric:tabular-nums}
+.chip.score{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.ghost{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:.9rem}
+.ghost:hover{border-color:var(--plum)}
+
+/* day clock */
+.clock{display:flex;justify-content:space-between;position:relative;padding-top:4px}
+.clock::before{content:"";position:absolute;left:12px;right:12px;top:15px;height:3px;background:var(--line);border-radius:3px}
+.stop{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--f-mono);font-size:.7rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.stop i{width:24px;height:24px;border-radius:50%;background:var(--surface);border:3px solid var(--line);display:block}
+.stop.done i{background:var(--plum);border-color:var(--plum)}
+.stop.now i{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 5px var(--accent-soft)}
+.stop.now{color:var(--ink);font-weight:700}
+
+/* cards */
+.card{background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:22px}
+.meta{font-family:var(--f-mono);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.story{display:flex;flex-direction:column;gap:14px}
+.story p{max-width:62ch}
+.v{background:none;border:0;padding:0 1px;font:inherit;color:inherit;text-align:left;
+   background-image:linear-gradient(transparent 58%,var(--accent-soft) 58%);border-bottom:2px solid var(--accent);border-radius:2px;cursor:help;display:inline}
+.v:hover{background-image:linear-gradient(transparent 0,var(--accent-soft) 0)}
+
+.choices{display:grid;gap:12px}
+.choice{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:16px 18px;transition:transform .12s,border-color .12s}
+.choice:hover{border-color:var(--plum);transform:translateY(-2px)}
+.choice .k{font-family:var(--f-display);font-size:1.4rem;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--sunk);color:var(--plum)}
+.choice > span:last-child{min-width:0}
+.choice.picked{border-color:var(--plum);background:var(--sunk)}
+.choice:disabled{cursor:default;transform:none}
+.choice.faded{opacity:.45}
+
+.outcome{border-left:4px solid var(--plum);padding:4px 0 4px 14px;font-style:italic}
+
+/* quiz */
+.quiz{background:var(--sunk);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:18px}
+.quiz h3{margin:0;font-size:.85rem;font-family:var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--plum)}
+.q{display:flex;flex-direction:column;gap:10px}
+.q .prompt{font-weight:700}
+.q .pts{font-family:var(--f-mono);font-size:.72rem;color:var(--muted);font-weight:500;margin-left:6px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:460px){.opts{grid-template-columns:1fr}}
+.opt{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;text-align:left}
+.opt:hover:not(:disabled){border-color:var(--plum)}
+.opt.ok{background:var(--good-soft);border-color:var(--good)}
+.opt.no{background:var(--bad-soft);border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.typerow{display:flex;gap:8px;flex-wrap:wrap}
+.typerow input{flex:1 1 160px;min-width:0;font:inherit;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
+.btn{background:var(--plum);color:var(--surface);border:0;border-radius:12px;padding:10px 18px;font-weight:700}
+.btn.big{font-size:1.05rem;padding:14px 24px;border-radius:14px}
+.btn.accent{background:var(--accent);color:var(--accent-ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.fb{font-size:.95rem;border-radius:10px;padding:8px 12px}
+.fb.ok{background:var(--good-soft);color:var(--ink);border-left:4px solid var(--good)}
+.fb.no{background:var(--bad-soft);color:var(--ink);border-left:4px solid var(--bad)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row .hint{color:var(--muted);font-size:.9rem}
+
+/* start + end */
+.lead{font-size:1.1rem;max-width:58ch}
+.family{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.fam{background:var(--sunk);border-radius:14px;padding:10px 12px;font-size:.92rem}
+.fam b{display:block;font-family:var(--f-display);font-weight:400;font-size:1.05rem;color:var(--plum)}
+.rules{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;color:var(--muted)}
+textarea{width:100%;min-height:96px;font:inherit;padding:12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);resize:vertical}
+.big-score{font-family:var(--f-display);font-size:3.2rem;color:var(--plum);line-height:1}
+.tally{display:grid;grid-template-columns:1fr auto;gap:6px 16px;font-variant-numeric:tabular-nums}
+.tally span:nth-child(even){font-family:var(--f-mono);font-weight:700;text-align:right}
+.path{margin:0;padding-left:20px;color:var(--muted);font-size:.92rem}
+.found{display:flex;flex-wrap:wrap;gap:6px}
+.found span{font-family:var(--f-mono);font-size:.78rem;background:var(--good-soft);border:1px solid var(--good);border-radius:999px;padding:3px 10px}
+
+/* glossary + tip */
+.gloss{display:grid;gap:0}
+.gloss div{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:4px 14px;padding:10px 0;border-bottom:1px solid var(--line)}
+.gloss div:last-child{border-bottom:0}
+.gloss .de{font-weight:700}
+.gloss .ex{grid-column:1/-1;font-size:.85rem;color:var(--muted)}
+@media (max-width:460px){.gloss div{grid-template-columns:1fr}}
+#tip{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:520px;margin:0 auto;background:var(--ink);color:var(--bg);border-radius:14px;padding:12px 16px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:5;display:flex;gap:12px;align-items:flex-start}
+#tip b{color:var(--accent)}
+#tip button{margin-left:auto;background:none;border:0;color:var(--bg);font-size:1.2rem;line-height:1}
+.fade{animation:fade .35s ease both}
+@keyframes fade{from{opacity:.001;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.fade{animation:none}.choice{transition:none}}
+</style>
+
+<div class="wrap">
+  <div class="bar">
+    <span class="brand">Omas 80.</span>
+    <span class="chip score" id="score">0 Punkte</span>
+    <button class="ghost" id="glossBtn" type="button">Szószedet</button>
+  </div>
+  <div class="clock" id="clock" hidden></div>
+  <main id="app" class="wrap" style="gap:18px"></main>
+  <section class="card" id="glossary" hidden>
+    <div class="row" style="justify-content:space-between;margin-bottom:8px"><h2>Szószedet</h2><button class="ghost" type="button" id="glossClose">Bezár</button></div>
+    <div class="gloss" id="glossList"></div>
+  </section>
+</div>
+<div id="tip" hidden></div>
+
+<script>
+/* ---------- Wortschatz ---------- */
+const V={
+ zuliebe:{de:"jdm. zuliebe",hu:"vki kedvéért",k:"+ Dativ – a főnév UTÁN áll",ex:"Seinen Eltern zuliebe räumt er auf."},
+ zugunsten:{de:"zugunsten + Gen.",hu:"vki/vmi javára",k:"+ Genitiv",ex:"Er verzichtet zugunsten seiner Schwester."},
+ mittels:{de:"mittels + Gen.",hu:"vminek a segítségével (eszköz)",k:"+ Genitiv",ex:"Papa repariert es mittels eines Drahtes."},
+ mithilfe:{de:"mithilfe + Gen.",hu:"vminek a segítségével",k:"+ Genitiv",ex:"Mithilfe des Wörterbuchs übersetzt sie das Rezept."},
+ anhand:{de:"anhand + Gen.",hu:"vmi alapján",k:"+ Genitiv",ex:"Anhand eines Zeitungsartikels erklärt Lea es."},
+ entgegen:{de:"entgegen + Dat.",hu:"vmivel ellentétben",k:"+ Dativ",ex:"Entgegen seiner Vermutung fliegt Staub heraus."},
+ ungeachtet:{de:"ungeachtet + Gen.",hu:"vmi ellenére",k:"+ Genitiv",ex:"Ungeachtet ihrer guten Noten muss sie üben."},
+ seitens:{de:"seitens + Gen.",hu:"vki részéről",k:"+ Genitiv",ex:"Seitens ihrer Großmutter gibt es eine Regel."},
+ imfalle:{de:"im Falle + Gen.",hu:"vmi esetén",k:"+ Genitiv",ex:"Im Falle eines Unfalls ruft man Hilfe."},
+ verwandeln:{de:"sich verwandeln in + Akk.",hu:"átváltozik vmivé",k:"in + Akkusativ",ex:"Der Hund verwandelt sich in einen Wollknäuel."},
+ gewoehnen:{de:"sich gewöhnen an + Akk.",hu:"hozzászokik vmihez",k:"an + Akkusativ",ex:"Oma gewöhnt sich an die Musik."},
+ hoffen:{de:"hoffen auf + Akk.",hu:"remél vmit, bízik vmiben",k:"auf + Akkusativ",ex:"Alle hoffen auf ein Wunder."},
+ lachen:{de:"lachen über + Akk.",hu:"nevet vmin",k:"über + Akkusativ",ex:"Alle lachen über den Witz."},
+ sprechen:{de:"sprechen über + Akk.",hu:"beszél vmiről",k:"über + Akkusativ",ex:"Wir sprechen über das Fest."},
+ angst:{de:"Angst haben vor + Dat.",hu:"fél vmitől",k:"vor + Dativ",ex:"Lea hat Angst vor dem Staubsauger."},
+ stelle:{de:"an seiner / ihrer Stelle",hu:"az ő helyében",k:"an + Dativ (fix kifejezés)",ex:"An deiner Stelle würde ich das nicht tun."},
+ ueber100:{de:"über 100 Leute",hu:"több mint 100 ember",k:"über = mehr als",ex:"Über 100 Leute stehen im Garten."}
+};
+
+/* ---------- Geschichte ---------- */
+const S={
+ s1:{time:"08:30",place:"Samstagmorgen",
+  text:"Samstag, halb neun bei Familie Zimmermann. Heute wird Oma Helga 80, und am Nachmittag kommen [[über 100 Leute|ueber100]] in euren kleinen Garten. Papa steht in der Garage und baut [[mittels eines Drahtes|mittels]], eines alten Staubsaugers und viel Klebeband eine „Konfettikanone“. Aus der Küche ruft Mama: „Ich brauche Hilfe beim Kuchen!“ Deine kleine Schwester Lea [[hat Angst vor dem Staubsauger|angst]] und versteckt sich unter dem Tisch.",
+  choices:[
+   {t:"Du gehst in die Garage. [[Deinen Eltern zuliebe|zuliebe]] tust du so, als wäre die Kanone eine geniale Idee.",out:"Papa strahlt. „Endlich versteht mich jemand!“ Er drückt dir eine Rolle Draht in die Hand.",next:"s2a"},
+   {t:"Du gehst in die Küche. Ehrlich gesagt [[hast du ein bisschen Angst vor|angst]] Papas Erfindungen.",out:"Mama seufzt erleichtert. „Gut, dass du kommst. Das Rezept ist nämlich auf Italienisch …“",next:"s2b"}]},
+ s2a:{time:"09:15",place:"Der Testlauf",
+  text:"Die Kanone ist fertig. Papa zielt auf den Gartenzaun und drückt den Knopf. [[Entgegen seiner Vermutung|entgegen]] fliegt kein Konfetti heraus, sondern eine riesige Staubwolke – direkt auf Knödel, euren Dackel. Knödel [[verwandelt sich in|verwandeln]] einen grauen Wollknäuel mit Ohren. Papa schaut dich an: „Na? Kleiner Fehler, oder?“",
+  choices:[
+   {t:"Du [[lachst über|lachen]] den grauen Hund so laut, dass Oma Helga aus dem Fenster schaut.",out:"Oma schaut streng. Dann sieht sie Knödel und muss selbst grinsen. Aber sie merkt sich alles.",next:"s3a"},
+   {t:"Du sagst ruhig: „Papa, [[an deiner Stelle|stelle]] würde ich die Kanone heute nicht mehr benutzen.“",out:"Papa brummt etwas, stellt die Kanone aber in die Ecke. Knödel niest dreimal. Krise vorerst vermieden.",next:"s3b"}]},
+ s2b:{time:"09:15",place:"Das italienische Rezept",
+  text:"Mama übersetzt das Kuchenrezept [[mithilfe des Wörterbuchs|mithilfe]]. Das Problem: Auf der Seite mit „lievito“ klebt ein alter Kaugummi. Lea liest inzwischen [[anhand eines Zeitungsartikels|anhand]] vor, wie man eine Torte „wie ein Profi“ dekoriert. Mama fragt dich: „Wie viel Hefe, meinst du?“",
+  choices:[
+   {t:"Du rätst mutig: „Zwei ganze Packungen! Oma soll einen großen Kuchen bekommen.“",out:"Der Teig geht auf. Und geht auf. Und geht auf … Er [[verwandelt sich in|verwandeln]] einen Ballon und drückt die Ofentür auf.",next:"s3a"},
+   {t:"Du [[sprichst mit Lea über|sprechen]] den Artikel. Ihr backt einen einfachen Kuchen und dekoriert ihn wie Profis.",out:"Der Kuchen sieht fantastisch aus. Lea ist stolz, Mama ist erleichtert.",next:"s3b"}]},
+ s3a:{time:"12:00",place:"Omas neue Regel",
+  text:"Mittag. Oma Helga ruft alle ins Wohnzimmer. „Ich habe gehört, hier ist heute schon einiges schiefgegangen“, sagt sie und klopft mit ihrem Stock auf den Boden. [[Seitens deiner Großmutter|seitens]] gibt es sofort eine neue Regel: [[Im Falle eines Unfalls|imfalle]] muss der Schuldige beim Fest Akkordeon spielen. Vor allen Gästen.",
+  choices:[
+   {t:"Du [[hoffst auf|hoffen]] Omas Gnade und sagst: „Das war alles Knödel!“ Der Hund wedelt unschuldig.",out:"Oma hebt eine Augenbraue. „Knödel kann kein Akkordeon spielen. Du schon.“ Du schluckst.",next:"s4a"},
+   {t:"Du [[sprichst ehrlich mit Oma über|sprechen]] alles, was heute Morgen passiert ist.",out:"Oma nickt. „Ehrlichkeit gefällt mir. Diesmal keine Strafe.“ Puh.",next:"s4b"}]},
+ s3b:{time:"12:00",place:"Pizza und Zeugnisse",
+  text:"Mittagessen: Pizza. Dein Cousin Jonas ist schon da und verzichtet [[zugunsten seiner Schwester|zugunsten]] Emma auf das letzte Stück. Alle sind gerührt. Aber Emma ist traurig: [[Ungeachtet ihrer guten Noten|ungeachtet]] soll sie heute Nachmittag Mathe üben. Das hat Tante Gisela entschieden.",
+  choices:[
+   {t:"Du versteckst Emmas Mathebuch im Gartenzwerg. Heute wird gefeiert!",out:"Tante Gisela sucht das Buch überall. Emma zwinkert dir zu. Ob das gut geht?",next:"s4a"},
+   {t:"Du hilfst Emma zehn Minuten beim Üben, damit sie danach mitfeiern kann.",out:"Emma löst alle Aufgaben. Tante Gisela ist zufrieden, und Emma ist frei.",next:"s4b"}]},
+ s4a:{time:"15:00",place:"Regen!",
+  text:"Drei Uhr. [[Über 100 Leute|ueber100]] stehen im Garten – und es beginnt zu regnen. Papa hat sofort eine Idee: [[Mittels eines Drahtes|mittels]] will er eine riesige Plane über den Garten spannen. Ein Ende muss jemand oben im Apfelbaum festhalten.",
+  choices:[
+   {t:"Du kletterst auf den Apfelbaum und hältst den Draht fest. Wie ein Held. Ein nasser Held.",out:"Die Plane hält! Ein bisschen. Dann rutscht dir der Draht aus der Hand, und das ganze Wasser landet auf Onkel Rudi.",next:"s5a"},
+   {t:"Du schlägst vor, alle ins Haus zu holen. Hundert Leute im Wohnzimmer – warum nicht?",out:"Es ist eng, aber trocken. Du musst [[dich erst an die Enge gewöhnen|gewoehnen]]: Jemand steht auf deinem Fuß.",next:"s5b"}]},
+ s4b:{time:"15:00",place:"Die Rede",
+  text:"Drei Uhr. Die Sonne scheint, [[über 100 Leute|ueber100]] sind gekommen. Oma soll eine Rede halten, aber sie [[hat Angst vor dem Mikrofon|angst]]. „Es pfeift immer so!“ Sie flüstert dir zu: „Sprich du für mich, Schatz. [[An meiner Stelle|stelle]] machst du das bestimmt besser.“",
+  choices:[
+   {t:"Du hältst eine spontane Rede und erzählst Witze über Papas Erfindungen.",out:"Die Gäste [[lachen über|lachen]] jeden Witz. Papa lacht nicht. Er lacht wirklich gar nicht.",next:"s5a"},
+   {t:"Du erzählst von Omas Leben, [[anhand eines Zeitungsartikels|anhand]] von 1965: Damals war sie Dorfmeisterin im Radfahren.",out:"Es ist ganz still. Dann klatschen alle. Oma wischt sich eine Träne weg.",next:"s5b"}]},
+ s5a:{time:"17:00",place:"Der Tortenunfall",
+  text:"Fünf Uhr. Die Stimmung ist wild. Knödel springt auf den Tisch, die Torte fällt, und Onkel Rudi rutscht auf der Sahne aus. Er liegt auf dem Rasen und stöhnt theatralisch. Oma ruft: „[[Im Falle eines Unfalls|imfalle]]: Erste-Hilfe-Koffer, sofort!“",
+  choices:[
+   {t:"Du holst den Koffer und [[verwandelst dich in|verwandeln]] einen Notarzt – mit Gummihandschuhen und ernster Stimme.",out:"Onkel Rudi hat nur Sahne im Ohr. Aber dein Verband um seinen Kopf ist beeindruckend.",next:"s6a"},
+   {t:"Du machst erst ein Foto für die Familienchronik. Onkel Rudi grinst ja schon wieder.",out:"Das Foto wird legendär: Rudi, Sahne und Knödel, der die Sahne von Rudis Schuh leckt.",next:"s6b"}]},
+ s5b:{time:"17:00",place:"Spiele im Garten",
+  text:"Fünf Uhr. Zeit für Spiele. Lea und Emma haben sich mit Schminke [[in zwei Clowns verwandelt|verwandeln]]. Oma braucht einen Moment, um [[sich an die zwei Clowns zu gewöhnen|gewoehnen]]. Dann startet das Sackhüpfen.",
+  choices:[
+   {t:"Du machst beim Sackhüpfen mit, obwohl du [[Angst vor dem Hinfallen|angst]] hast.",out:"Du fällst nach drei Metern hin. Alle klatschen trotzdem. Knödel gewinnt.",next:"s6a"},
+   {t:"Du organisierst ein Quiz über Omas 80 Jahre. Die Fragen schreibst du auf Servietten.",out:"Oma gewinnt ihr eigenes Quiz. Natürlich.",next:"s6b"}]},
+ s6a:{time:"20:00",place:"Stromausfall",
+  text:"Acht Uhr abends. Plötzlich ist alles dunkel: Papa hat die Konfettikanone am selben Stecker wie die Lichterkette angeschlossen. Kurzschluss. Die Gäste stehen im Dunkeln und [[hoffen auf|hoffen]] ein Wunder. Papa flüstert: „Ich weiß, wo der Fehler ist. Glaube ich.“",
+  choices:[
+   {t:"Du hilfst Papa: Kanone wieder anschließen, Daumen drücken.",out:"Papa dreht am Draht. Es summt. Es brummt. Dann …",next:"endA"},
+   {t:"Du holst Kerzen, und Oma erzählt Gruselgeschichten von früher.",out:"Im Kerzenlicht rücken alle zusammen. Oma erzählt so spannend, dass sogar Onkel Rudi still ist.",next:"endB"}]},
+ s6b:{time:"20:00",place:"Das letzte Kapitel",
+  text:"Acht Uhr abends. Die Gäste werden müde. Oma sitzt im Liegestuhl und sagt: „An so viel Trubel [[habe ich mich nicht mehr gewöhnt|gewoehnen]].“ Sie [[hofft auf|hoffen]] einen ruhigen Abschluss. Aber Papa steht schon mit der Konfettikanone im Garten und schaut dich fragend an.",
+  choices:[
+   {t:"Du gibst Papa das Startsignal: „Drei, zwei, eins – Feuer!“",out:"Papa drückt den Knopf. Es summt. Es brummt. Dann …",next:"endA"},
+   {t:"Du überredest Papa, die Kanone für Omas 90. Geburtstag aufzuheben.",out:"Papa seufzt, aber er nickt. Oma zwinkert dir dankbar zu.",next:"endB"}]},
+ endA:{time:"Ende",place:"Konfetti-Finale",
+  text:"BUMM! Diesmal funktioniert die Kanone. Tausende bunte Papierschnipsel regnen über den Garten, über die Gäste, über Knödel und über Oma Helga. Einen Moment ist es ganz still. Dann [[lacht Oma über|lachen]] das bunte Chaos, so laut wie noch nie: „Das war der verrückteste Geburtstag meines Lebens. Und der beste!“"},
+ endB:{time:"Ende",place:"Stilles Finale",
+  text:"Später sitzt die ganze Familie auf der Terrasse. Oma nimmt deine Hand: „Weißt du, heute warst du der Vernünftigste in dieser Familie. Und das will bei den Zimmermanns etwas heißen.“ Knödel schnarcht leise. Ein perfekter Tag. Fast."}
+};
+const STOPS=["08:30","09:15","12:00","15:00","17:00","20:00","Ende"];
+
+/* ---------- Quiz-Pool ---------- */
+const Q=[
+ {v:"zuliebe",type:"mc",q:"Ich räume mein Zimmer auf – ___ zuliebe.",opts:["meinen Eltern","meiner Eltern","meine Eltern","für meine Eltern"],a:"meinen Eltern",ex:"A zuliebe Dativot vonz, és a főnév után áll: meinen Eltern zuliebe."},
+ {v:"zuliebe",type:"mc",q:"Was bedeutet: „seinen Eltern zuliebe“?",opts:["a szülei kedvéért","a szülei ellenére","a szülei helyett","a szülei részéről"],a:"a szülei kedvéért",ex:"zuliebe = vki kedvéért."},
+ {v:"zugunsten",type:"type",q:"Jonas verzichtet zugunsten ______ Schwester auf das letzte Stück Pizza. (sein-)",acc:["seiner"],ex:"zugunsten + Genitiv; die Schwester → seiner Schwester."},
+ {v:"zugunsten",type:"mc",q:"Was bedeutet: „zugunsten seiner Schwester“?",opts:["a húga javára","a húga ellenére","a húgával szemben","a húga miatt"],a:"a húga javára",ex:"zugunsten = vki javára."},
+ {v:"mittels",type:"mc",q:"Papa repariert die Kanone ___ eines Drahtes.",opts:["mittels","entgegen","zuliebe","seitens"],a:"mittels",ex:"mittels + Genitiv: eszközt fejez ki."},
+ {v:"mittels",type:"type",q:"Papa spannt die Plane mittels ______ Drahtes. (ein-)",acc:["eines"],ex:"der Draht → Genitiv: eines Drahtes."},
+ {v:"mithilfe",type:"mc",q:"Mama übersetzt das Rezept mithilfe ___ Wörterbuchs.",opts:["des","dem","das","der"],a:"des",ex:"mithilfe + Genitiv; das Wörterbuch → des Wörterbuchs."},
+ {v:"mithilfe",type:"type",q:"Ich lerne die Wörter ______ des Wörterbuchs. (vminek a segítségével – egy szó!)",acc:["mithilfe","mit hilfe"],ex:"mithilfe (egybeírva is, külön is helyes: mit Hilfe)."},
+ {v:"anhand",type:"mc",q:"Lea erklärt das Dekorieren anhand ___ Zeitungsartikels.",opts:["eines","einer","einem","ein"],a:"eines",ex:"der Artikel → Genitiv: eines Zeitungsartikels (-s végződés!)."},
+ {v:"anhand",type:"mc",q:"Was bedeutet „anhand“?",opts:["vmi alapján","vmi helyett","vmi ellenére","vmi esetén"],a:"vmi alapján",ex:"anhand + Genitiv = vmi alapján."},
+ {v:"entgegen",type:"mc",q:"___ seiner Vermutung fliegt kein Konfetti heraus, sondern Staub.",opts:["Entgegen","Mittels","Anhand","Zugunsten"],a:"Entgegen",ex:"entgegen + Dativ = vmivel ellentétben."},
+ {v:"entgegen",type:"mc",q:"Welcher Fall steht nach „entgegen“?",opts:["Dativ","Akkusativ","Nominativ","nur Genitiv"],a:"Dativ",ex:"entgegen + Dativ: entgegen seiner Vermutung (die Vermutung → seiner)."},
+ {v:"ungeachtet",type:"mc",q:"Was bedeutet: „ungeachtet ihrer guten Noten“?",opts:["jó jegyei ellenére","jó jegyei miatt","jó jegyei alapján","jó jegyei helyett"],a:"jó jegyei ellenére",ex:"ungeachtet + Genitiv = vmi ellenére."},
+ {v:"ungeachtet",type:"type",q:"Ungeachtet ______ guten Noten muss Emma Mathe üben. (ihr-)",acc:["ihrer"],ex:"ungeachtet + Genitiv, Plural: ihrer guten Noten."},
+ {v:"seitens",type:"mc",q:"Seitens ___ Großmutter gibt es eine neue Regel.",opts:["deiner","deine","deinem","dich"],a:"deiner",ex:"seitens + Genitiv; die Großmutter → deiner Großmutter."},
+ {v:"seitens",type:"mc",q:"Was bedeutet „seitens“?",opts:["vki részéről","vki mellett","vki helyett","vki kedvéért"],a:"vki részéről",ex:"seitens + Genitiv = vki részéről (hivatalos stílus)."},
+ {v:"imfalle",type:"mc",q:"Im Falle ___ Unfalls holst du den Erste-Hilfe-Koffer.",opts:["eines","einem","einen","ein"],a:"eines",ex:"im Falle + Genitiv; der Unfall → eines Unfalls."},
+ {v:"imfalle",type:"mc",q:"Was bedeutet: „im Falle eines Unfalls“?",opts:["baleset esetén","baleset miatt","baleset ellenére","baleset helyett"],a:"baleset esetén",ex:"im Falle + Genitiv = vmi esetén."},
+ {v:"verwandeln",type:"type",q:"Knödel verwandelt sich ___ einen grauen Wollknäuel.",acc:["in"],ex:"sich verwandeln in + Akkusativ."},
+ {v:"verwandeln",type:"mc",q:"Lea verwandelt sich in ___ Clown.",opts:["einen","einem","eines","ein"],a:"einen",ex:"in + Akkusativ (változás iránya): einen Clown."},
+ {v:"gewoehnen",type:"mc",q:"Oma gewöhnt sich ___ die laute Musik.",opts:["an","auf","über","vor"],a:"an",ex:"sich gewöhnen an + Akkusativ."},
+ {v:"gewoehnen",type:"type",q:"Ich habe mich ___ den Trubel gewöhnt.",acc:["an"],ex:"sich gewöhnen an + Akkusativ: an den Trubel."},
+ {v:"hoffen",type:"mc",q:"Alle hoffen ___ ein Wunder.",opts:["auf","an","über","vor"],a:"auf",ex:"hoffen auf + Akkusativ."},
+ {v:"hoffen",type:"type",q:"Du hoffst ___ Omas Gnade.",acc:["auf"],ex:"hoffen auf + Akkusativ."},
+ {v:"lachen",type:"type",q:"Die Gäste lachen ___ Papas Erfindung.",acc:["über","ueber","uber"],ex:"lachen über + Akkusativ."},
+ {v:"lachen",type:"mc",q:"Wir lachen über ___ grauen Hund.",opts:["den","dem","des","der"],a:"den",ex:"über + Akkusativ: den Hund."},
+ {v:"sprechen",type:"mc",q:"Du sprichst ehrlich über ___ Problem.",opts:["das","dem","des","die"],a:"das",ex:"sprechen über + Akkusativ: das Problem."},
+ {v:"sprechen",type:"type",q:"Lea und du sprecht ___ den Zeitungsartikel.",acc:["über","ueber","uber"],ex:"sprechen über + Akkusativ."},
+ {v:"angst",type:"mc",q:"Lea hat Angst vor ___ Staubsauger.",opts:["dem","den","des","das"],a:"dem",ex:"Angst haben vor + Dativ: vor dem Staubsauger."},
+ {v:"angst",type:"type",q:"Oma hat Angst ___ dem Mikrofon.",acc:["vor"],ex:"Angst haben vor + Dativ."},
+ {v:"stelle",type:"type",q:"___ deiner Stelle würde ich die Kanone nicht benutzen.",acc:["an"],ex:"an + Dativ: an deiner Stelle = a te helyedben."},
+ {v:"stelle",type:"mc",q:"Was bedeutet: „an ihrer Stelle“?",opts:["az ő helyében","az ő kedvéért","az ő javára","az ő ellenére"],a:"az ő helyében",ex:"an seiner/ihrer Stelle = az ő helyében."},
+ {v:"ueber100",type:"mc",q:"„Über 100 Leute“ bedeutet:",opts:["több mint 100 ember","körülbelül 100 ember","100 emberről","kevesebb mint 100 ember"],a:"több mint 100 ember",ex:"Számok előtt az über = mehr als (több mint)."},
+ {v:"ueber100",type:"mc",q:"In welchem Satz bedeutet „über“ = mehr als?",opts:["Über 100 Leute sind gekommen.","Wir sprechen über das Fest.","Alle lachen über Papa.","Die Plane hängt über dem Garten."],a:"Über 100 Leute sind gekommen.",ex:"Csak számok előtt jelent „több mint”-et."}
+];
+
+/* ---------- Zustand ---------- */
+let st;
+function fresh(){return{scene:"s1",phase:"start",score:0,max:0,testedV:[],usedQ:[],path:[],quiz:null,refl:null}}
+st=fresh();
+
+const $=s=>document.querySelector(s);
+const app=$("#app");
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const mark=t=>esc(t).replace(/\[\[(.+?)\|(\w+)\]\]/g,(m,txt,id)=>`<button type="button" class="v" data-v="${id}">${txt}</button>`);
+const tags=t=>[...(t||"").matchAll(/\|(\w+)\]\]/g)].map(m=>m[1]);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const norm=s=>s.trim().toLowerCase().replace(/\s+/g," ").replace(/[.!?]$/,"");
+
+function setScore(){$("#score").textContent=`${st.score} Punkte`}
+function drawClock(){
+  const c=$("#clock");
+  if(st.phase==="start"){c.hidden=true;return}
+  c.hidden=false;
+  const cur=st.phase==="refl"||st.phase==="done"?STOPS.length-1:STOPS.indexOf(S[st.scene].time);
+  c.innerHTML=STOPS.map((t,i)=>`<div class="stop ${i<cur?"done":i===cur?"now":""}"><i></i>${t}</div>`).join("");
+}
+
+/* ---------- Quiz-Auswahl ---------- */
+function pickQuiz(vlist){
+  const fresh=v=>!st.testedV.includes(v);
+  const cand=Q.map((q,i)=>({...q,i})).filter(q=>!st.usedQ.includes(q.i));
+  const pref=[...new Set(vlist)];
+  const score=q=>(pref.includes(q.v)?2:0)+(fresh(q.v)?3:0)+Math.random();
+  const typed=cand.filter(q=>q.type==="type").sort((a,b)=>score(b)-score(a))[0];
+  const mcs=cand.filter(q=>q.type==="mc"&&(!typed||q.v!==typed.v)).sort((a,b)=>score(b)-score(a))[0];
+  const out=[mcs,typed].filter(Boolean);
+  out.forEach(q=>{st.usedQ.push(q.i);if(!st.testedV.includes(q.v))st.testedV.push(q.v)});
+  return out.map(q=>({...q,opts:q.opts?shuffle(q.opts):null,pts:q.type==="type"?2:1,done:false,got:0,given:null}));
+}
+
+/* ---------- Render ---------- */
+function render(){
+  setScore();drawClock();
+  if(st.phase==="start")return renderStart();
+  if(st.phase==="refl")return renderRefl();
+  if(st.phase==="done")return renderDone();
+  renderScene();
+}
+
+function renderStart(){
+  app.innerHTML=`
+  <section class="card fade" style="display:flex;flex-direction:column;gap:16px">
+    <div class="meta">Kalandjáték · Deutsch B1–B2</div>
+    <h1>Omas 80. Geburtstag</h1>
+    <p class="lead">A Zimmermann családban vagy kamasz gyerek. Ma lesz Helga nagyi 80. születésnapja, több mint száz vendéggel – és papa megint feltalált valamit. Minden helyzetben két lehetőség közül választasz; a döntésed meghatározza, hová kerülsz.</p>
+    <div class="family">
+      <div class="fam"><b>Oma Helga</b>80, szigorú, de vicces</div>
+      <div class="fam"><b>Papa Bernd</b>hobbi-feltaláló</div>
+      <div class="fam"><b>Mama Sabine</b>süt, sóhajt</div>
+      <div class="fam"><b>Lea</b>a húgod, 10 éves</div>
+      <div class="fam"><b>Knödel</b>tacskó, mindenre kapható</div>
+    </div>
+    <ul class="rules">
+      <li>Hat döntés, mindegyik után két rövid kérdés (választós 1 pont, beírós 2 pont).</li>
+      <li>Rossz válasz után is továbbléphetsz.</li>
+      <li>A <span class="v" style="cursor:default">kiemelt kifejezésekre</span> koppintva látod a jelentésüket.</li>
+      <li>A végén 1–2 mondatos reflexió – azért is jár pont.</li>
+    </ul>
+    <div><button class="btn big accent" id="go" type="button">Los geht’s!</button></div>
+  </section>`;
+  $("#go").onclick=()=>{st.phase="scene";render();window.scrollTo(0,0)};
+}
+
+function renderScene(){
+  const sc=S[st.scene];
+  if(st.scene.startsWith("end")){
+    app.innerHTML=`<section class="card fade story"><div><div class="meta">${sc.time} · Finale</div><h2>${sc.place}</h2></div><p>${mark(sc.text)}</p>
+    <div class="row"><button class="btn big accent" id="toRefl" type="button">Zur Reflexion →</button></div></section>`;
+    $("#toRefl").onclick=()=>{st.phase="refl";render();window.scrollTo(0,0)};
+    return;
+  }
+  const picked=st.quiz?st.quiz.choice:null;
+  let h=`<section class="card fade story"><div><div class="meta">${sc.time} Uhr</div><h2>${sc.place}</h2></div><p>${mark(sc.text)}</p></section>
+  <div class="choices">${sc.choices.map((c,i)=>`<button type="button" class="choice ${picked===i?"picked":picked!=null?"faded":""}" data-c="${i}" ${picked!=null?"disabled":""}><span class="k">${"AB"[i]}</span><span>${mark(c.t)}</span></button>`).join("")}</div>`;
+  if(st.quiz){
+    const c=sc.choices[picked];
+    h+=`<p class="outcome fade">${mark(c.out)}</p>
+    <section class="quiz fade"><h3>Kurzquiz · Wortschatz</h3>${st.quiz.items.map(renderQ).join("")}
+    <div class="row"><button class="btn big" id="next" type="button" ${st.quiz.items.every(q=>q.done)?"":"disabled"}>Weiter →</button><span class="hint">${st.quiz.items.every(q=>q.done)?"":"Válaszolj mindkét kérdésre – rossz válasz után is mehetsz tovább."}</span></div></section>`;
+  }
+  app.innerHTML=h;
+  app.querySelectorAll(".choice").forEach(b=>b.onclick=e=>{
+    if(e.target.closest(".v"))return;
+    const i=+b.dataset.c, c=sc.choices[i];
+    st.path.push(`${sc.time} – ${sc.place}: ${"AB"[i]}`);
+    st.quiz={choice:i,items:pickQuiz([...tags(sc.text),...tags(c.t),...tags(c.out)])};
+    st.quiz.items.forEach(q=>st.max+=q.pts);
+    render();
+    requestAnimationFrame(()=>$(".outcome")?.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"}));
+  });
+  bindQuiz();
+  const n=$("#next");
+  if(n)n.onclick=()=>{st.scene=sc.choices[st.quiz.choice].next;st.quiz=null;render();window.scrollTo(0,0)};
+}
+
+function renderQ(q,k){
+  const head=`<div class="prompt">${esc(q.q)}<span class="pts">${q.pts} P.</span></div>`;
+  let body;
+  if(q.type==="mc"){
+    body=`<div class="opts">${q.opts.map(o=>{let cls="";if(q.done){if(o===q.a)cls="ok";else if(o===q.given)cls="no"}return`<button type="button" class="opt ${cls}" data-q="${k}" data-o="${esc(o)}" ${q.done?"disabled":""}>${esc(o)}</button>`}).join("")}</div>`;
+  }else{
+    body=`<div class="typerow"><input id="in${k}" data-q="${k}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Írd be a hiányzó szót" value="${q.given!=null?esc(q.given):""}" ${q.done?"disabled":""}><button type="button" class="btn" data-check="${k}" ${q.done?"disabled":""}>Prüfen</button></div>`;
+  }
+  const fb=q.done?`<div class="fb ${q.got?"ok":"no"}">${q.got?`Richtig! +${q.got}`:`Leider nicht. Richtig: <b>${esc(q.a||q.acc[0])}</b>`} – ${esc(q.ex)}</div>`:"";
+  return `<div class="q">${head}${body}${fb}</div>`;
+}
+
+function answer(k,val){
+  const q=st.quiz.items[k]; if(q.done)return;
+  q.given=val; q.done=true;
+  const ok=q.type==="mc"?val===q.a:q.acc.includes(norm(val));
+  q.got=ok?q.pts:0; st.score+=q.got;
+  render();
+  requestAnimationFrame(()=>document.querySelectorAll(".q")[k]?.scrollIntoView({block:"nearest"}));
+}
+function bindQuiz(){
+  app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>answer(+b.dataset.q,b.dataset.o));
+  app.querySelectorAll("[data-check]").forEach(b=>b.onclick=()=>{const k=+b.dataset.check,v=$("#in"+k).value;if(v.trim())answer(k,v)});
+  app.querySelectorAll(".typerow input").forEach(i=>i.onkeydown=e=>{if(e.key==="Enter"&&i.value.trim())answer(+i.dataset.q,i.value)});
+}
+
+/* ---------- Reflexion ---------- */
+const RX={
+ zuliebe:t=>/\bzuliebe\b/.test(t),zugunsten:t=>/\bzugunsten\b/.test(t),mittels:t=>/\bmittels\b/.test(t),
+ mithilfe:t=>/\bmit ?hilfe\b/.test(t),anhand:t=>/\banhand\b/.test(t),entgegen:t=>/\bentgegen\b/.test(t),
+ ungeachtet:t=>/\bungeachtet\b/.test(t),seitens:t=>/\bseitens\b/.test(t),imfalle:t=>/\bim fall/.test(t),
+ verwandeln:t=>/verwandel/.test(t)&&/\bin\b/.test(t),gewoehnen:t=>/gew(ö|oe)hn/.test(t)&&/\ban\b/.test(t),
+ hoffen:t=>/\bhoff/.test(t)&&/\bauf\b/.test(t),lachen:t=>/\blach/.test(t)&&/(über|ueber)/.test(t),
+ sprechen:t=>/\b(sprech|sprich|sprach|gesproch)/.test(t)&&/(über|ueber)/.test(t),angst:t=>/\bangst\b/.test(t)&&/\bvor\b/.test(t),
+ stelle:t=>/\ban (meiner|deiner|seiner|ihrer|unserer|eurer|omas|papas|mamas) stelle\b/.test(t),ueber100:t=>/\b(über|ueber|mehr als) \d+/.test(t)
+};
+function scoreRefl(raw){
+  const t=raw.toLowerCase();
+  const found=Object.keys(RX).filter(k=>RX[k](t));
+  const words=raw.trim().split(/\s+/).filter(Boolean).length;
+  const sents=(raw.match(/[.!?]+(\s|$)/g)||[]).length;
+  let p=0,notes=[];
+  if(found.length>=2){p+=4;notes.push("legalább két kifejezés a játékból (+4)")}
+  else if(found.length===1){p+=2;notes.push("egy kifejezés a játékból (+2)")}
+  else notes.push("nem találtam kifejezést a játékból (0)");
+  if(words>=6&&words<=45&&sents<=2){p+=1;notes.push("1–2 mondat, megfelelő hossz (+1)")}
+  else notes.push(words<6?"túl rövid (0)":"túl hosszú – 1–2 mondat a cél (0)");
+  if(/^[A-ZÄÖÜ]/.test(raw.trim())&&/[.!?]$/.test(raw.trim())){p+=1;notes.push("nagybetű és írásjel (+1)")}
+  return{p,found,notes};
+}
+function renderRefl(){
+  app.innerHTML=`<section class="card fade" style="display:flex;flex-direction:column;gap:14px">
+    <div class="meta">Reflexion · max. 6 Punkte</div>
+    <h2>Und du?</h2>
+    <p><b>Welche Entscheidung war für dich am lustigsten – und warum?</b> Schreib 1–2 Sätze auf Deutsch und benutze mindestens einen Ausdruck aus dem Spiel.</p>
+    <p style="color:var(--muted);font-size:.92rem">Pl.: „An Papas Stelle hätte ich Angst vor der Kanone gehabt.” – Két kifejezés 4 pont, egy kifejezés 2 pont, megfelelő hossz +1, nagybetű és írásjel +1.</p>
+    <label for="refl" class="meta" style="margin:0">Deine Antwort</label>
+    <textarea id="refl" placeholder="Ich habe am meisten über … gelacht, weil …"></textarea>
+    <div class="row"><button class="btn big accent" id="sendR" type="button">Abgeben</button><span class="hint" id="rhint"></span></div>
+  </section>`;
+  $("#sendR").onclick=()=>{
+    const v=$("#refl").value.trim();
+    if(!v){$("#rhint").textContent="Írj legalább egy mondatot.";return}
+    const r=scoreRefl(v); st.refl={text:v,...r}; st.score+=r.p; st.max+=6; st.phase="done"; render(); window.scrollTo(0,0);
+  };
+}
+
+function renderDone(){
+  const quizPts=st.score-st.refl.p, quizMax=st.max-6;
+  const pct=Math.round(st.score/st.max*100);
+  const verdict=pct>=85?"Sprachgenie der Familie Zimmermann!":pct>=60?"Oma Helga ist stolz auf dich.":pct>=35?"Gut gemacht – noch eine Runde, und es sitzt.":"Knödel hat auch nicht alles gewusst. Versuch’s noch einmal!";
+  const summary=`Omas 80. – Ergebnis\nPunkte: ${st.score}/${st.max} (Quiz ${quizPts}/${quizMax}, Reflexion ${st.refl.p}/6)\nWeg: ${st.path.map(p=>p.split(": ")[1]).join("-")} → ${S[st.scene].place}\nReflexion: ${st.refl.text}`;
+  app.innerHTML=`<section class="card fade" style="display:flex;flex-direction:column;gap:16px">
+    <div class="meta">Ergebnis · ${esc(S[st.scene].place)}</div>
+    <div class="big-score">${st.score}<span style="font-size:1.4rem;color:var(--muted)"> / ${st.max}</span></div>
+    <h2 style="font-size:1.35rem">${verdict}</h2>
+    <div class="tally"><span>Kurzquiz (${st.usedQ.length} Fragen)</span><span>${quizPts} / ${quizMax}</span><span>Reflexion</span><span>${st.refl.p} / 6</span></div>
+  </section>
+  <section class="card" style="display:flex;flex-direction:column;gap:10px">
+    <div class="meta">Deine Reflexion</div>
+    <p><i>„${esc(st.refl.text)}“</i></p>
+    ${st.refl.found.length?`<div class="found">${st.refl.found.map(k=>`<span>${esc(V[k].de)}</span>`).join("")}</div>`:""}
+    <ul class="path" style="color:var(--ink)">${st.refl.notes.map(n=>`<li>${esc(n)}</li>`).join("")}</ul>
+    <p style="color:var(--muted);font-size:.88rem">Az automatikus pontozás csak azt nézi, szerepelnek-e a kifejezések. A nyelvtani helyességet a tanár ellenőrzi.</p>
+  </section>
+  <section class="card" style="display:flex;flex-direction:column;gap:10px">
+    <div class="meta">Dein Weg durch den Tag</div>
+    <ul class="path">${st.path.map(p=>`<li>${esc(p)}</li>`).join("")}</ul>
+    <div class="row" style="margin-top:6px">
+      <button class="btn" id="copy" type="button">Eredmény másolása</button>
+      <button class="btn accent" id="again" type="button">Noch einmal spielen</button>
+      <span class="hint" id="chint"></span>
+    </div>
+    <textarea id="sum" readonly hidden>${esc(summary)}</textarea>
+  </section>`;
+  $("#again").onclick=()=>{st=fresh();st.phase="scene";render();window.scrollTo(0,0)};
+  $("#copy").onclick=()=>{
+    const ok=()=>$("#chint").textContent="Kimásolva – beillesztheted a tanárnak.";
+    const fallback=()=>{const s=$("#sum");s.hidden=false;s.select();$("#chint").textContent="Jelöld ki és másold ki a szöveget."};
+    try{navigator.clipboard.writeText(summary).then(ok,fallback)}catch(e){fallback()}
+  };
+}
+
+/* ---------- Wortschatz-Tipp & Glossar ---------- */
+const tip=$("#tip");
+document.addEventListener("click",e=>{
+  const b=e.target.closest(".v[data-v]"); if(!b)return;
+  e.stopPropagation();
+  const v=V[b.dataset.v];
+  tip.innerHTML=`<div><b>${esc(v.de)}</b> = ${esc(v.hu)}<br><span style="opacity:.8;font-size:.88rem">${esc(v.k)}</span></div><button type="button" aria-label="Bezár">×</button>`;
+  tip.hidden=false; tip.querySelector("button").onclick=()=>tip.hidden=true;
+  clearTimeout(tip._t); tip._t=setTimeout(()=>tip.hidden=true,6000);
+},true);
+$("#glossList").innerHTML=Object.values(V).map(v=>`<div><span class="de">${esc(v.de)}</span><span>${esc(v.hu)} <span style="color:var(--muted);font-size:.85rem">· ${esc(v.k)}</span></span><span class="ex">${esc(v.ex)}</span></div>`).join("");
+$("#glossBtn").onclick=()=>{const g=$("#glossary");g.hidden=!g.hidden;if(!g.hidden)g.scrollIntoView({block:"start"})};
+$("#glossClose").onclick=()=>{$("#glossary").hidden=true;window.scrollTo(0,0)};
+
+render();
+</script>
+
+</body></html>
